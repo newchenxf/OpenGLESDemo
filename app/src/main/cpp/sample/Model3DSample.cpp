@@ -97,6 +97,7 @@ void Model3DSample::Init()
     //app层已把model文件夹拷贝到 /sdcard/Android/data/com.chenxf.opengles/files/Download 路径下，所以这里可以加载模型
 	std::string path(DEFAULT_OGL_ASSETS_DIR);
     m_pModel = new Model(path + "/model/avata1/eva.obj");
+    //m_pModel = new Model(path + "/model/vampire/dancing_vampire.dae");
 
     if (m_pModel->ContainsTextures())
     {

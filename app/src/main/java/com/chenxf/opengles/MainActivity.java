@@ -71,6 +71,8 @@ public class MainActivity extends Activity implements AudioCollector.Callback, V
 
         String fileDir = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
         CommonUtils.copyAssetsDirToSDCard(this, "avata1", fileDir + "/model");
+        CommonUtils.copyAssetsDirToSDCard(this, "vampire", fileDir + "/model");
+
     }
 
     @Override

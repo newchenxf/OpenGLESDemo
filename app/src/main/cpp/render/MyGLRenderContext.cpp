@@ -1,5 +1,6 @@
 #include <TriangleSample.h>
 #include <Model3DSample.h>
+#include <Model3DAnimSample.h>
 #include "MyGLRenderContext.h"
 #include "LogUtil.h"
 
@@ -7,7 +8,7 @@ MyGLRenderContext* MyGLRenderContext::m_pContext = nullptr;
 
 MyGLRenderContext::MyGLRenderContext()
 {
-	m_pCurSample = new Model3DSample();
+	m_pCurSample = new Model3DAnimSample();
 	m_pBeforeSample = nullptr;
 
 }
@@ -53,7 +54,9 @@ void MyGLRenderContext::SetParamsInt(int paramType, int value0, int value1)
 			case SAMPLE_TYPE_KEY_3D_MODEL:
 				m_pCurSample = new Model3DSample();
 				break;
-
+			case SAMPLE_TYPE_KEY_3D_MODEL_ANIM:
+				m_pCurSample = new Model3DAnimSample();
+				break;
 			default:
 			    m_pCurSample = nullptr;
 				break;

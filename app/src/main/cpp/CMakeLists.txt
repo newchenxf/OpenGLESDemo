@@ -26,6 +26,7 @@ include_directories(
 # Gradle automatically packages shared libraries with your APK.
 file(GLOB src-files
         ${CMAKE_SOURCE_DIR}/*.cpp
+        ${CMAKE_SOURCE_DIR}/Model3DAnimSample.cpp
         ${CMAKE_SOURCE_DIR}/render/*.cpp
         ${CMAKE_SOURCE_DIR}/util/*.cpp
         ${CMAKE_SOURCE_DIR}/sample/*.cpp

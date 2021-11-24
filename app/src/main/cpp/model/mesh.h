@@ -14,7 +14,7 @@
 #include "../glm/vec3.hpp"
 
 using namespace std;
-
+#define MAX_BONE_INFLUENCE 4
 struct Vertex {
     // position
     glm::vec3 Position;
@@ -26,6 +26,11 @@ struct Vertex {
     glm::vec3 Tangent;
     // bitangent
     glm::vec3 Bitangent;
+
+    //bone indexes which will influence this vertex
+    int m_BoneIDs[MAX_BONE_INFLUENCE];
+    //weights from each bone
+    float m_Weights[MAX_BONE_INFLUENCE];
 };
 
 struct Texture {
@@ -57,6 +62,7 @@ public:
     // render the mesh
     void Draw(Shader shader) 
     {
+        DEBUG_LOGCATE();
         // bind appropriate textures
         unsigned int diffuseNr  = 1;
         unsigned int specularNr = 1;
@@ -140,12 +146,25 @@ private:
         // vertex texture coords
         glEnableVertexAttribArray(2);	
         glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords));
-        // vertex tangent
+
+        //TODO shader does not use tangent & bitangent yet
+//        // vertex tangent
+//        glEnableVertexAttribArray(3);
+//        glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Tangent));
+//        // vertex bitangent
+//        glEnableVertexAttribArray(4);
+//        glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Bitangent));
+
+
+        //骨骼动画
+        // ids
         glEnableVertexAttribArray(3);
-        glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Tangent));
-        // vertex bitangent
+        glVertexAttribIPointer(3, 4, GL_INT, sizeof(Vertex), (void*)offsetof(Vertex, m_BoneIDs));
+
+        // weights
         glEnableVertexAttribArray(4);
-        glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Bitangent));
+        glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, m_Weights));
+
 
         glBindVertexArray(0);
     }

@@ -12,6 +12,7 @@
 #define SAMPLE_TYPE                             200
 #define SAMPLE_TYPE_KEY_TRIANGLE                SAMPLE_TYPE + 0
 #define SAMPLE_TYPE_KEY_3D_MODEL                SAMPLE_TYPE + 17
+#define SAMPLE_TYPE_KEY_3D_MODEL_ANIM           SAMPLE_TYPE + 18
 
 #define SAMPLE_TYPE_KEY_SET_TOUCH_LOC           SAMPLE_TYPE + 999
 #define SAMPLE_TYPE_SET_GRAVITY_XY              SAMPLE_TYPE + 1000
