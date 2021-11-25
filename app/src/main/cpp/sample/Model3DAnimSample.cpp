@@ -24,13 +24,15 @@ Model3DAnimSample::~Model3DAnimSample()
 
 void Model3DAnimSample::Init()
 {
-	if(m_pModel != nullptr && m_pShader != nullptr)
+    DEBUG_LOGCATE();
+
+    if(m_pModel != nullptr && m_pShader != nullptr)
 		return;
 
 	char vShaderStr[] =
 			"#version 300 es\n"
             "precision mediump float;\n"
-            "layout(location = 0) in vec3 pos;\n"
+            "layout(location = 0) in vec3 a_position;\n"
             "layout(location = 1) in vec3 norm;\n"
             "layout(location = 2) in vec2 tex;\n"
             "layout(location = 3) in ivec4 boneIds; \n"
@@ -53,15 +55,16 @@ void Model3DAnimSample::Init()
             "            continue;\n"
             "        if(boneIds[i] >=MAX_BONES) \n"
             "        {\n"
-            "            totalPosition = vec4(pos,1.0f);\n"
+            "            totalPosition = vec4(a_position, 1.0f);\n"
             "            break;\n"
             "        }\n"
-            "        vec4 localPosition = finalBonesMatrices[boneIds[i]] * vec4(pos,1.0f);\n"
+            "        vec4 localPosition = finalBonesMatrices[boneIds[i]] * vec4(a_position,1.0f);\n"
             "        totalPosition += localPosition * weights[i];\n"
             "        vec3 localNormal = mat3(finalBonesMatrices[boneIds[i]]) * norm;\n"
             "   }\n"
             "\t\n"
-            "    gl_Position =  u_MVPMatrix * totalPosition;\n"
+            "    vec4 position = vec4(a_position, 1.0);\n"
+            "    gl_Position =  u_MVPMatrix * a_position;\n"
             "\tTexCoords = tex;\n"
             "}";
 
@@ -83,14 +86,10 @@ void Model3DAnimSample::Init()
             "#version 300 es\n"
             "precision highp float;\n"
             "out vec4 outColor;\n"
-            "in vec3 ambient;\n"
-            "in vec3 diffuse;\n"
-            "in vec3 specular;\n"
             "void main()\n"
             "{    \n"
             "    vec4 objectColor = vec4(0.6, 0.6, 0.6, 1.0);\n"
-            "    vec3 finalColor = (ambient + diffuse + specular) * vec3(objectColor);\n"
-            "    outColor = vec4(finalColor, 1.0);\n"
+            "    outColor = objectColor;\n"
             "}";
     //app层已把model文件夹拷贝到 /sdcard/Android/data/com.chenxf.opengles/files/Download 路径下，所以这里可以加载模型
 	std::string path(DEFAULT_OGL_ASSETS_DIR);

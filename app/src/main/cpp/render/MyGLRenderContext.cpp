@@ -8,7 +8,7 @@ MyGLRenderContext* MyGLRenderContext::m_pContext = nullptr;
 
 MyGLRenderContext::MyGLRenderContext()
 {
-	m_pCurSample = new Model3DAnimSample();
+	m_pCurSample = new TriangleSample();
 	m_pBeforeSample = nullptr;
 
 }
