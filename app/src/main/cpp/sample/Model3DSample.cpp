@@ -101,7 +101,7 @@ void Model3DSample::Init()
 
     DEBUG_LOGCATE();
     //m_pModel = new Model(path + "/model/avata2/SambaDancing.fbx");
-    m_pModel = new Model(path + "/model/avata1/eva.obj");
+    m_pModel = new Model(path + "/model/vampire/dancing_vampire.dae");
     //m_pModel = new Model(path + "/model/vampire/dancing_vampire.dae");
 
     DEBUG_LOGCATE();
@@ -128,7 +128,7 @@ void Model3DSample::Draw(int screenW, int screenH)
 {
 	if(m_pModel == nullptr || m_pShader == nullptr) return;
     LOGCATE("Model3DSample::Draw()");
-    glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
 

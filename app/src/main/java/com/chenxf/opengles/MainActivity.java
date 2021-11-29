@@ -45,6 +45,7 @@ public class MainActivity extends Activity implements AudioCollector.Callback, V
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         findViewById(R.id.button_start).setOnClickListener(this);
+        findViewById(R.id.button_start_2).setOnClickListener(this);
         mTextView = findViewById(R.id.text_info);
         mRootView = (ViewGroup) findViewById(R.id.rootView);
         mRootView.getViewTreeObserver().addOnGlobalLayoutListener(this);
@@ -151,6 +152,9 @@ public class MainActivity extends Activity implements AudioCollector.Callback, V
         if(view.getId() == R.id.button_start) {
             Log.e(TAG, "start to render 3D model");
             mGLRender.setParamsInt(SAMPLE_TYPE, SAMPLE_TYPE_3D_MODEL, 0);
+        } else if(view.getId() == R.id.button_start_2) {
+            Log.e(TAG, "start to render 3D anmi model");
+            mGLRender.setParamsInt(SAMPLE_TYPE, SAMPLE_TYPE_3D_MODEL_ANIM, 0);
         }
     }
 

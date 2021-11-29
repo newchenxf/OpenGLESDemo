@@ -7,17 +7,30 @@
     android:id="@+id/rootView"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/button_start"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="开始"/>
+        android:orientation="vertical">
+        <Button
+            android:id="@+id/button_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="静态模型"/>
 
-    <TextView
-        android:id="@+id/text_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/button_start"/>
+        <Button
+            android:id="@+id/button_start_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="骨骼模型"/>
+
+        <TextView
+            android:id="@+id/text_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/button_start"/>
+    </LinearLayout>
+
+
 
 
 </RelativeLayout>
