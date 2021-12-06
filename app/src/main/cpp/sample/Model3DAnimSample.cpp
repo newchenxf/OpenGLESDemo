@@ -29,27 +29,50 @@ void Model3DAnimSample::Init()
     if(m_pModel != nullptr && m_pShader != nullptr)
 		return;
 
-
+#if 1
     char vShaderStr[] =
             "#version 300 es\n"
             "precision mediump float;\n"
             "layout (location = 0) in vec3 a_position;\n"
             "layout (location = 1) in vec3 a_normal;\n"
             "layout (location = 2) in vec2 a_texCoord;\n"
+            "layout (location = 3) in vec3 tangent; \n"
+            "layout (location = 4) in vec3 bitangent;\n"
+            "layout (location = 5) in ivec4 boneIds; \n"
+            "layout (location = 6) in vec4 weights;\n"
             "out vec2 v_texCoord;\n"
             "uniform mat4 u_MVPMatrix;\n"
             "uniform mat4 u_ModelMatrix;\n"
             "uniform vec3 lightPos;\n"
             "uniform vec3 lightColor;\n"
             "uniform vec3 viewPos;\n"
+            "const int MAX_BONES = 100;\n"
+            "const int MAX_BONE_INFLUENCE = 4;\n"
+            "uniform mat4 finalBonesMatrices[MAX_BONES];\n"
             "out vec3 ambient;\n"
             "out vec3 diffuse;\n"
             "out vec3 specular;\n"
             "void main()\n"
             "{\n"
             "    v_texCoord = a_texCoord;    \n"
-            "    vec4 position = vec4(a_position, 1.0);\n"
+
+            "    vec4 position = vec4(0.0f);\n"
+            "    for(int i = 0 ; i < MAX_BONE_INFLUENCE ; i++)\n"
+            "    {\n"
+            "        if(boneIds[i] == -1) \n"
+            "            continue;\n"
+            "        if(boneIds[i] >=MAX_BONES) \n"
+            "        {\n"
+            "            position = vec4(a_position,1.0f);\n"
+            "            break;\n"
+            "        }\n"
+            "        vec4 localPosition = finalBonesMatrices[boneIds[i]] * vec4(a_position,1.0f);\n"
+            "        position += localPosition * weights[i];\n"
+            "   }\n"
+
+//            "    vec4 position = vec4(a_position, 1.0);\n"
             "    gl_Position = u_MVPMatrix * position;\n"
+
             "    vec3 fragPos = vec3(u_ModelMatrix * position);\n"
             "\n"
             "    // Ambient\n"
@@ -100,69 +123,71 @@ void Model3DAnimSample::Init()
             "    vec3 finalColor = (ambient + diffuse + specular) * vec3(objectColor);\n"
             "    outColor = vec4(finalColor, 1.0);\n"
             "}";
+#else
+	char vShaderStr[] =
+			"#version 300 es\n"
+            "precision mediump float;\n"
+            "layout(location = 0) in vec3 a_position;\n"
+            "layout(location = 1) in vec3 norm;\n"
+            "layout(location = 2) in vec2 tex;\n"
+            "layout(location = 3) in ivec4 boneIds; \n"
+            "layout(location = 4) in vec4 weights;\n"
+            "\n"
+            "uniform mat4 u_MVPMatrix;\n"
+            "\n"
+            "const int MAX_BONES = 100;\n"
+            "const int MAX_BONE_INFLUENCE = 4;\n"
+            "uniform mat4 finalBonesMatrices[MAX_BONES];\n"
+            "\n"
+            "out vec2 TexCoords;\n"
+            "\n"
+            "void main()\n"
+            "{\n"
+            "    vec4 totalPosition = vec4(0.0f);\n"
+            "    for(int i = 0 ; i < MAX_BONE_INFLUENCE ; i++)\n"
+            "    {\n"
+            "        if(boneIds[i] == -1) \n"
+            "            continue;\n"
+            "        if(boneIds[i] >=MAX_BONES) \n"
+            "        {\n"
+            "            totalPosition = vec4(a_position, 1.0f);\n"
+            "            break;\n"
+            "        }\n"
+            "        vec4 localPosition = finalBonesMatrices[boneIds[i]] * vec4(a_position,1.0f);\n"
+            "        totalPosition += localPosition * weights[i];\n"
+            "        vec3 localNormal = mat3(finalBonesMatrices[boneIds[i]]) * norm;\n"
+            "   }\n"
+            "\t\n"
+            "    vec4 position = vec4(a_position, 1.0);\n"
+            "    gl_Position =  u_MVPMatrix * a_position;\n"
+            "\tTexCoords = tex;\n"
+            "}";
 
-//	char vShaderStr[] =
-//			"#version 300 es\n"
-//            "precision mediump float;\n"
-//            "layout(location = 0) in vec3 a_position;\n"
-//            "layout(location = 1) in vec3 norm;\n"
-//            "layout(location = 2) in vec2 tex;\n"
-//            "layout(location = 3) in ivec4 boneIds; \n"
-//            "layout(location = 4) in vec4 weights;\n"
-//            "\n"
-//            "uniform mat4 u_MVPMatrix;\n"
-//            "\n"
-//            "const int MAX_BONES = 100;\n"
-//            "const int MAX_BONE_INFLUENCE = 4;\n"
-//            "uniform mat4 finalBonesMatrices[MAX_BONES];\n"
-//            "\n"
-//            "out vec2 TexCoords;\n"
-//            "\n"
-//            "void main()\n"
-//            "{\n"
-//            "    vec4 totalPosition = vec4(0.0f);\n"
-//            "    for(int i = 0 ; i < MAX_BONE_INFLUENCE ; i++)\n"
-//            "    {\n"
-//            "        if(boneIds[i] == -1) \n"
-//            "            continue;\n"
-//            "        if(boneIds[i] >=MAX_BONES) \n"
-//            "        {\n"
-//            "            totalPosition = vec4(a_position, 1.0f);\n"
-//            "            break;\n"
-//            "        }\n"
-//            "        vec4 localPosition = finalBonesMatrices[boneIds[i]] * vec4(a_position,1.0f);\n"
-//            "        totalPosition += localPosition * weights[i];\n"
-//            "        vec3 localNormal = mat3(finalBonesMatrices[boneIds[i]]) * norm;\n"
-//            "   }\n"
-//            "\t\n"
-//            "    vec4 position = vec4(a_position, 1.0);\n"
-//            "    gl_Position =  u_MVPMatrix * a_position;\n"
-//            "\tTexCoords = tex;\n"
-//            "}";
-//
-//	char fShaderStr[] =
-//			"#version 300 es\n"
-//            "precision mediump float;"
-//            "out vec4 FragColor;\n"
-//            "\n"
-//            "in vec2 TexCoords;\n"
-//            "\n"
-//            "uniform sampler2D texture_diffuse1;\n"
-//            "\n"
-//            "void main()\n"
-//            "{    \n"
-//            "    FragColor = texture(texture_diffuse1, TexCoords);\n"
-//            "}";
-//
-//    char fNoTextureShaderStr[] =
-//            "#version 300 es\n"
-//            "precision highp float;\n"
-//            "out vec4 outColor;\n"
-//            "void main()\n"
-//            "{    \n"
-//            "    vec4 objectColor = vec4(0.6, 0.6, 0.6, 1.0);\n"
-//            "    outColor = objectColor;\n"
-//            "}";
+	char fShaderStr[] =
+			"#version 300 es\n"
+            "precision mediump float;"
+            "out vec4 FragColor;\n"
+            "\n"
+            "in vec2 TexCoords;\n"
+            "\n"
+            "uniform sampler2D texture_diffuse1;\n"
+            "\n"
+            "void main()\n"
+            "{    \n"
+            "    FragColor = texture(texture_diffuse1, TexCoords);\n"
+            "}";
+
+    char fNoTextureShaderStr[] =
+            "#version 300 es\n"
+            "precision highp float;\n"
+            "out vec4 outColor;\n"
+            "void main()\n"
+            "{    \n"
+            "    vec4 objectColor = vec4(0.6, 0.6, 0.6, 1.0);\n"
+            "    outColor = objectColor;\n"
+            "}";
+#endif
+
     //app层已把model文件夹拷贝到 /sdcard/Android/data/com.chenxf.opengles/files/Download 路径下，所以这里可以加载模型
 	std::string path(DEFAULT_OGL_ASSETS_DIR);
     m_pModel = new ModelAnim(path + "/model/vampire/dancing_vampire.dae");
@@ -193,7 +218,7 @@ void Model3DAnimSample::Draw(int screenW, int screenH)
 
 	//TODO chenxf
 	//prepare
-//	float deltaTime = 0.5;
+//	float deltaTime = 0.03f;
 //    m_pAnimator->UpdateAnimation(deltaTime);
 
     LOGCATE("Draw start");
@@ -215,9 +240,11 @@ void Model3DAnimSample::Draw(int screenW, int screenH)
     m_pShader->setVec3("viewPos", glm::vec3(0, 0, m_pModel->GetMaxViewDistance()));
 
 //    //bones setting
-//    auto transforms = m_pAnimator->GetFinalBoneMatrices();
-//    for (int i = 0; i < transforms.size(); ++i)
-//        m_pShader->setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
+    auto transforms = m_pAnimator->GetFinalBoneMatrices();
+
+    LOGCATE("Draw, transform size %d", transforms.size());
+    for (int i = 0; i < transforms.size(); ++i)
+        m_pShader->setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
 
     m_pModel->Draw((*m_pShader));
     LOGCATE("Draw done");

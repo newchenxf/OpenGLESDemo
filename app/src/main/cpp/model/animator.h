@@ -42,14 +42,11 @@ public:
 	void CalculateBoneTransform(const AssimpNodeData* node, glm::mat4 parentTransform)
 	{
 		DEBUG_LOGCATE();
-		DEBUG_LOGCATE();
 
 		std::string nodeName = node->name;
 		glm::mat4 nodeTransform = node->transformation;
 
 		Bone* Bone = m_CurrentAnimation->FindBone(nodeName);
-
-		DEBUG_LOGCATE();
 
 		if (Bone)
 		{
@@ -57,19 +54,12 @@ public:
 			Bone->Update(m_CurrentTime);
 			nodeTransform = Bone->GetLocalTransform();
 		}
-		DEBUG_LOGCATE();
 
 		LOGCATE("nodeTransform length %d", nodeTransform.length());
 
 		glm::mat4 globalTransformation = parentTransform * nodeTransform;
-		DEBUG_LOGCATE();
 
 		std::map<std::string,BoneInfo> boneInfoMap = m_CurrentAnimation->GetBoneIDMap();
-		DEBUG_LOGCATE();
-
-		if(boneInfoMap.empty()) {
-			DEBUG_LOGCATE();
-		}
 
 		if (boneInfoMap.find(nodeName) != boneInfoMap.end())
 		{

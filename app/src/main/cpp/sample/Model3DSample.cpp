@@ -21,12 +21,13 @@ Model3DSample::~Model3DSample()
 
 void Model3DSample::Init()
 {
-    LOGCATE("chenxf4: Init start");
 
     if(m_pModel != nullptr && m_pShader != nullptr)
 		return;
 
-	char vShaderStr[] =
+    LOGCATE("Init start");
+
+    char vShaderStr[] =
 			"#version 300 es\n"
             "precision mediump float;\n"
 			"layout (location = 0) in vec3 a_position;\n"
@@ -102,7 +103,8 @@ void Model3DSample::Init()
     DEBUG_LOGCATE();
     //m_pModel = new Model(path + "/model/avata2/SambaDancing.fbx");
     m_pModel = new Model(path + "/model/vampire/dancing_vampire.dae");
-    //m_pModel = new Model(path + "/model/vampire/dancing_vampire.dae");
+    //m_pModel = new Model(path + "/model/gltf/girl.gltf");
+//    m_pModel = new Model(path + "/model/test/test.glb");
 
     DEBUG_LOGCATE();
 

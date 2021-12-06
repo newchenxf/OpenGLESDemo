@@ -80,6 +80,7 @@ public class MainActivity extends Activity implements AudioCollector.Callback, V
         CommonUtils.copyAssetsDirToSDCard(this, "avata1", fileDir + "/model");
         CommonUtils.copyAssetsDirToSDCard(this, "avata2", fileDir + "/model");
         CommonUtils.copyAssetsDirToSDCard(this, "vampire", fileDir + "/model");
+        CommonUtils.copyAssetsDirToSDCard(this, "cowboy", fileDir + "/model");
 
     }
 
