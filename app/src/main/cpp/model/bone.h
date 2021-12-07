@@ -38,7 +38,8 @@ public:
 		m_LocalTransform(1.0f)
 	{
 		m_NumPositions = channel->mNumPositionKeys;
-
+        //1. 提取关键帧的位移参数，放到m_Positions列表，后面可以用于计算插值
+        LOGCATE("Bone created, m_NumPositions %d", m_NumPositions);
 		for (int positionIndex = 0; positionIndex < m_NumPositions; ++positionIndex)
 		{
 			aiVector3D aiPosition = channel->mPositionKeys[positionIndex].mValue;
@@ -47,8 +48,9 @@ public:
 			data.position = AssimpGLMHelpers::GetGLMVec(aiPosition);
 			data.timeStamp = timeStamp;
 			m_Positions.push_back(data);
-		}
-
+            LOGCATE("get one key frame's position %c, timeStamp %f", glm::to_string(data.position).c_str(), data.timeStamp);
+        }
+		//2. 提取关键帧的旋转
 		m_NumRotations = channel->mNumRotationKeys;
 		for (int rotationIndex = 0; rotationIndex < m_NumRotations; ++rotationIndex)
 		{
@@ -59,7 +61,7 @@ public:
 			data.timeStamp = timeStamp;
 			m_Rotations.push_back(data);
 		}
-
+		//3. 提取关键帧的缩放
 		m_NumScalings = channel->mNumScalingKeys;
 		for (int keyIndex = 0; keyIndex < m_NumScalings; ++keyIndex)
 		{
@@ -74,6 +76,7 @@ public:
 	
 	void Update(float animationTime)
 	{
+		//根据时间，估算translation, rotation, scale，最后合并成一个矩阵
 		glm::mat4 translation = InterpolatePosition(animationTime);
 		glm::mat4 rotation = InterpolateRotation(animationTime);
 		glm::mat4 scale = InterpolateScaling(animationTime);
@@ -92,7 +95,8 @@ public:
 			if (animationTime < m_Positions[index + 1].timeStamp)
 				return index;
 		}
-		assert(0);
+		//assert(0);
+		return 0;
 	}
 
 	int GetRotationIndex(float animationTime)
@@ -102,7 +106,8 @@ public:
 			if (animationTime < m_Rotations[index + 1].timeStamp)
 				return index;
 		}
-		assert(0);
+		//assert(0);
+		return 0;
 	}
 
 	int GetScaleIndex(float animationTime)
@@ -112,7 +117,8 @@ public:
 			if (animationTime < m_Scales[index + 1].timeStamp)
 				return index;
 		}
-		assert(0);
+		//assert(0);
+		return 0;
 	}
 
 

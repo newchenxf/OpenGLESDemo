@@ -25,15 +25,18 @@ public:
 
 	Animation(const std::string& animationPath, ModelAnim* model)
 	{
+		LOGCATE("Animation created");
 		Assimp::Importer importer;
 		const aiScene* scene = importer.ReadFile(animationPath, aiProcess_Triangulate);
 		assert(scene && scene->mRootNode);
-		auto animation = scene->mAnimations[0];
+
+		auto animation = scene->mAnimations[0];//可以有多种动画，本例子只显示第一种动画
+
 		m_Duration = animation->mDuration;
 		m_TicksPerSecond = animation->mTicksPerSecond;
 		LOGCATE("Animation created, m_Duration %d, m_TicksPerSecond %d", m_Duration, m_TicksPerSecond);
-		globalTransformation = scene->mRootNode->mTransformation;//TODO chenxf
-		globalTransformation = globalTransformation.Inverse();
+        m_GlobalTransformation = scene->mRootNode->mTransformation;//TODO chenxf
+		m_GlobalTransformation = m_GlobalTransformation.Inverse();
 		ReadHeirarchyData(m_RootNode, scene->mRootNode);
 		ReadMissingBones(animation, *model);
 	}
@@ -58,7 +61,7 @@ public:
 	
 	inline float GetTicksPerSecond() { return m_TicksPerSecond; }
 	inline float GetDuration() { return m_Duration;}
-	inline aiMatrix4x4& GetGlobalTransformation() { return globalTransformation;}
+	inline aiMatrix4x4& GetGlobalTransformation() { return m_GlobalTransformation;}
 
 	inline const AssimpNodeData& GetRootNode() { return m_RootNode; }
 	inline const std::map<std::string,BoneInfo>& GetBoneIDMap() 
@@ -71,23 +74,25 @@ private:
 	void ReadMissingBones(const aiAnimation* animation, ModelAnim& model)
 	{
 		int size = animation->mNumChannels;
-
+		//获得之前解析权重时所记录的骨骼map，其中key为骨骼名字
 		m_BoneInfoMap = model.GetBoneInfoMap();//getting m_BoneInfoMap from Model class
 		LOGCATE("ReadMissingBones, m_BoneInfoMap address %p, size %d, animation->mNumChannels %d", &m_BoneInfoMap,m_BoneInfoMap.size(), animation->mNumChannels);
-
+		//获得骨骼计数器，用于分配id
 		int& boneCount = model.GetBoneCount(); //getting the m_BoneCounter from Model class
 
 		//reading channels(bones engaged in an animation and their keyframes)
+		//读取通道列表，每个通道包括所有被该动画影响的骨骼，以及对应的关键帧
 		for (int i = 0; i < size; i++)
 		{
-			auto channel = animation->mChannels[i];
-			std::string boneName = channel->mNodeName.data;
+			auto channel = animation->mChannels[i];//一个channel代表某个骨骼
+			std::string boneName = channel->mNodeName.data;//拿到骨骼名字
 
 			if (m_BoneInfoMap.find(boneName) == m_BoneInfoMap.end())
-			{
+			{//如果万一map不包括这个骨骼，则记录下来
 				m_BoneInfoMap[boneName].id = boneCount;
 				boneCount++;
 			}
+			//创建一个Bone对象，添加到m_Bones数组
 			m_Bones.push_back(Bone(channel->mNodeName.data,
 								   m_BoneInfoMap[channel->mNodeName.data].id, channel));
 		}
@@ -117,6 +122,6 @@ private:
 	std::vector<Bone> m_Bones;
 	AssimpNodeData m_RootNode;
 	std::map<std::string, BoneInfo> m_BoneInfoMap;
-    aiMatrix4x4 globalTransformation;
+    aiMatrix4x4 m_GlobalTransformation;
 };
 

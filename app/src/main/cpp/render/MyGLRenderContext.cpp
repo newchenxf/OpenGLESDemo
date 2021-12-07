@@ -67,7 +67,7 @@ void MyGLRenderContext::SetParamsInt(int paramType, int value0, int value1)
 }
 
 void MyGLRenderContext::SetParamsFloat(int paramType, float value0, float value1) {
-	LOGCATE("MyGLRenderContext::SetParamsFloat paramType=%d, value0=%f, value1=%f", paramType, value0, value1);
+	//LOGCATE("MyGLRenderContext::SetParamsFloat paramType=%d, value0=%f, value1=%f", paramType, value0, value1);
 	if(m_pCurSample)
 	{
 		switch (paramType)
@@ -199,7 +199,6 @@ void MyGLRenderContext::OnDrawFrame()
 
 MyGLRenderContext *MyGLRenderContext::GetInstance()
 {
-	LOGCATE("MyGLRenderContext::GetInstance");
 	if (m_pContext == nullptr)
 	{
 		m_pContext = new MyGLRenderContext();

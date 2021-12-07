@@ -22,6 +22,9 @@
 
 using namespace std;
 
+/**
+ * support a model which contains skeleton animation
+ */
 class ModelAnim
 {
 public:
@@ -95,12 +98,12 @@ private:
     // loads a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector.
     void loadModel(string const &path)
     {
+        LOGCATE("loadModel start");
         // read file via ASSIMP
         Assimp::Importer importer;
-        DEBUG_LOGCATE();
         const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace);
         // check for errors
-		DEBUG_LOGCATE();
+        LOGCATE("importer.ReadFile done");
 
 		if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
         {
@@ -112,6 +115,7 @@ private:
 
         // process ASSIMP's root node recursively
         processNode(scene->mRootNode, scene);
+        LOGCATE("loadModel done");
     }
 
     // processes a node in a recursive fashion. Processes each individual mesh located at the node and repeats this process on its children nodes (if any).
@@ -149,26 +153,6 @@ private:
 		vector<Vertex> vertices;
 		vector<unsigned int> indices;
 		vector<Texture> textures;
-
-//		for (unsigned int i = 0; i < mesh->mNumVertices; i++)
-//		{
-//			Vertex vertex;
-//			SetVertexBoneDataToDefault(vertex);
-//			vertex.Position = AssimpGLMHelpers::GetGLMVec(mesh->mVertices[i]);
-//			vertex.Normal = AssimpGLMHelpers::GetGLMVec(mesh->mNormals[i]);
-//
-//			if (mesh->mTextureCoords[0])
-//			{
-//				glm::vec2 vec;
-//				vec.x = mesh->mTextureCoords[0][i].x;
-//				vec.y = mesh->mTextureCoords[0][i].y;
-//				vertex.TexCoords = vec;
-//			}
-//			else
-//				vertex.TexCoords = glm::vec2(0.0f, 0.0f);
-//
-//			vertices.push_back(vertex);
-//		}
 
 		for(unsigned int i = 0; i < mesh->mNumVertices; i++)
 		{
@@ -240,10 +224,11 @@ private:
 
 	void SetVertexBoneData(Vertex& vertex, int boneID, float weight)
 	{
-    	LOGCATE("SetVertexBoneData, boneID %d, weight %f", boneID, weight);
+        LOGCATE("SetVertexBoneData, boneID %d, weight %f", boneID, weight);
+        LOGCATE("SetVertexBoneData, vertex position %p, boneID %d, weight %f", &vertex, boneID, weight);
 		for (int i = 0; i < MAX_BONE_INFLUENCE; ++i)
 		{
-			if (vertex.m_BoneIDs[i] < 0)
+			if (vertex.m_BoneIDs[i] < 0)//如果第N个骨骼还没填充权重数据，则填充，填充完break
 			{
 				vertex.m_Weights[i] = weight;
 				vertex.m_BoneIDs[i] = boneID;
@@ -255,40 +240,47 @@ private:
 
 	void ExtractBoneWeightForVertices(std::vector<Vertex>& vertices, aiMesh* mesh, const aiScene* scene)
 	{
-    	LOGCATE("ExtractBoneWeightForVertices, m_BoneCounter %d", m_BoneCounter);
+    	LOGCATE("ExtractBoneWeightForVertices, mesh->mNumBones %d", mesh->mNumBones);
 		auto& boneInfoMap = m_BoneInfoMap;
-		int& boneCount = m_BoneCounter;
+		int& boneCount = m_BoneCounter;//start from 0
 
+		//一个Mesh可以有多个骨骼
 		for (int boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex)
 		{
+			//1. 为这根骨骼分配一个id，方便后续计算
 			int boneID = -1;
-			std::string boneName = mesh->mBones[boneIndex]->mName.C_Str();
-			LOGCATE("bone name %s", boneName.c_str());
+            aiBone* aiBonePtr = mesh->mBones[boneIndex];//接下来针对这根骨骼提取数据
+			std::string boneName = aiBonePtr->mName.C_Str();
 			if (boneInfoMap.find(boneName) == boneInfoMap.end())
 			{
 				BoneInfo newBoneInfo;
+				//分配id
 				newBoneInfo.id = boneCount;
-				newBoneInfo.offset = AssimpGLMHelpers::ConvertMatrixToGLMFormat(mesh->mBones[boneIndex]->mOffsetMatrix);
+				//提取offset矩阵
+				newBoneInfo.offset = AssimpGLMHelpers::ConvertMatrixToGLMFormat(aiBonePtr->mOffsetMatrix);
 				boneInfoMap[boneName] = newBoneInfo;
-				boneID = boneCount;
+				boneID = boneCount;//assign an id
 				boneCount++;
 			}
 			else
 			{
 				boneID = boneInfoMap[boneName].id;
 			}
-			LOGCATE("boneId %s, boneCount %d", boneName.c_str(), boneCount);
+			LOGCATE("boneName %s, boneID %d, boneCount %d", boneName.c_str(), boneID, boneCount);
 
 			assert(boneID != -1);
-			auto weights = mesh->mBones[boneIndex]->mWeights;
-			int numWeights = mesh->mBones[boneIndex]->mNumWeights;
+			auto weightsArray = aiBonePtr->mWeights;//骨骼的权重数组，用指针表示，数组长度为numWeights
+			int numWeights = aiBonePtr->mNumWeights;
 
-			LOGCATE("weights %d, numWeights %d", weights->mWeight, numWeights);
+			LOGCATE("numWeights %d", numWeights);
 
+			//2. 遍历所有的权重数组，提取出weight，来放到顶点数据结构中
+			//一根骨骼，可以影响多个顶点，通过权重参数来影响，不同的顶点的权重不同
+			//一个顶点，也可以被多个骨骼影响，特别是关节处(2个骨骼交界处)，但最多4个
 			for (int weightIndex = 0; weightIndex < numWeights; ++weightIndex)
 			{
-				int vertexId = weights[weightIndex].mVertexId;
-				float weight = weights[weightIndex].mWeight;
+				int vertexId = weightsArray[weightIndex].mVertexId;
+				float weight = weightsArray[weightIndex].mWeight;
 				assert(vertexId <= vertices.size());
 				SetVertexBoneData(vertices[vertexId], boneID, weight);
 			}

@@ -101,8 +101,8 @@ void Model3DSample::Init()
 	std::string path(DEFAULT_OGL_ASSETS_DIR);
 
     DEBUG_LOGCATE();
-    //m_pModel = new Model(path + "/model/avata2/SambaDancing.fbx");
-    m_pModel = new Model(path + "/model/vampire/dancing_vampire.dae");
+    m_pModel = new Model(path + "/model/avata1/eva.obj");
+    //m_pModel = new Model(path + "/model/vampire/dancing_vampire.dae");
     //m_pModel = new Model(path + "/model/gltf/girl.gltf");
 //    m_pModel = new Model(path + "/model/test/test.glb");
 
