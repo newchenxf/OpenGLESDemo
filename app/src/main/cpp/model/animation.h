@@ -32,7 +32,7 @@ public:
 		m_Duration = animation->mDuration;
 		m_TicksPerSecond = animation->mTicksPerSecond;
 		LOGCATE("Animation created, m_Duration %d, m_TicksPerSecond %d", m_Duration, m_TicksPerSecond);
-		aiMatrix4x4 globalTransformation = scene->mRootNode->mTransformation;
+		globalTransformation = scene->mRootNode->mTransformation;//TODO chenxf
 		globalTransformation = globalTransformation.Inverse();
 		ReadHeirarchyData(m_RootNode, scene->mRootNode);
 		ReadMissingBones(animation, *model);
@@ -48,7 +48,6 @@ public:
 		auto iter = std::find_if(m_Bones.begin(), m_Bones.end(),
 			[&](const Bone& Bone)
 			{
-				LOGCATE("get valid result");
 				return Bone.GetBoneName() == name;
 			}
 		);
@@ -59,6 +58,8 @@ public:
 	
 	inline float GetTicksPerSecond() { return m_TicksPerSecond; }
 	inline float GetDuration() { return m_Duration;}
+	inline aiMatrix4x4& GetGlobalTransformation() { return globalTransformation;}
+
 	inline const AssimpNodeData& GetRootNode() { return m_RootNode; }
 	inline const std::map<std::string,BoneInfo>& GetBoneIDMap() 
 	{
@@ -116,5 +117,6 @@ private:
 	std::vector<Bone> m_Bones;
 	AssimpNodeData m_RootNode;
 	std::map<std::string, BoneInfo> m_BoneInfoMap;
+    aiMatrix4x4 globalTransformation;
 };
 

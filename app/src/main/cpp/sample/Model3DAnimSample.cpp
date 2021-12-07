@@ -218,8 +218,8 @@ void Model3DAnimSample::Draw(int screenW, int screenH)
 
 	//TODO chenxf
 	//prepare
-//	float deltaTime = 0.03f;
-//    m_pAnimator->UpdateAnimation(deltaTime);
+	float deltaTime = 0.03f;
+    m_pAnimator->UpdateAnimation(deltaTime);
 
     LOGCATE("Draw start");
 

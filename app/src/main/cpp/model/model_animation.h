@@ -283,7 +283,7 @@ private:
 			auto weights = mesh->mBones[boneIndex]->mWeights;
 			int numWeights = mesh->mBones[boneIndex]->mNumWeights;
 
-			LOGCATE("weights %d, numWeights %d", weights, numWeights);
+			LOGCATE("weights %d, numWeights %d", weights->mWeight, numWeights);
 
 			for (int weightIndex = 0; weightIndex < numWeights; ++weightIndex)
 			{
