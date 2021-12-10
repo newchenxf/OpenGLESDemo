@@ -48,7 +48,7 @@ public:
 			data.position = AssimpGLMHelpers::GetGLMVec(aiPosition);
 			data.timeStamp = timeStamp;
 			m_Positions.push_back(data);
-            LOGCATE("get one key frame's position %c, timeStamp %f", glm::to_string(data.position).c_str(), data.timeStamp);
+            LOGCATE("get one key frame's position %s, timeStamp %f", glm::to_string(data.position).c_str(), data.timeStamp);
         }
 		//2. 提取关键帧的旋转
 		m_NumRotations = channel->mNumRotationKeys;

@@ -11,23 +11,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+        <TextView
+            android:id="@+id/text_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
         <Button
-            android:id="@+id/button_start"
+            android:id="@+id/button_start_0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="静态模型"/>
+            android:text="三角形"/>
+        <Button
+            android:id="@+id/button_start_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3D静态模型"/>
 
         <Button
             android:id="@+id/button_start_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="骨骼模型"/>
+            android:text="3D骨骼动画模型"/>
 
-        <TextView
-            android:id="@+id/text_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/button_start"/>
+
     </LinearLayout>
 
 

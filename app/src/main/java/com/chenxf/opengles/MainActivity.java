@@ -23,6 +23,7 @@ import static android.opengl.GLSurfaceView.RENDERMODE_CONTINUOUSLY;
 import static com.chenxf.opengles.MyNativeRender.SAMPLE_TYPE;
 import static com.chenxf.opengles.MyNativeRender.SAMPLE_TYPE_3D_MODEL;
 import static com.chenxf.opengles.MyNativeRender.SAMPLE_TYPE_3D_MODEL_ANIM;
+import static com.chenxf.opengles.MyNativeRender.SAMPLE_TYPE_TRIANGLE;
 
 public class MainActivity extends Activity implements AudioCollector.Callback, ViewTreeObserver.OnGlobalLayoutListener, SensorEventListener, View.OnClickListener, MyGLRender.FPSListener {
     private static final String TAG = "MainActivity";
@@ -44,7 +45,8 @@ public class MainActivity extends Activity implements AudioCollector.Callback, V
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        findViewById(R.id.button_start).setOnClickListener(this);
+        findViewById(R.id.button_start_0).setOnClickListener(this);
+        findViewById(R.id.button_start_1).setOnClickListener(this);
         findViewById(R.id.button_start_2).setOnClickListener(this);
         mTextView = findViewById(R.id.text_info);
         mRootView = (ViewGroup) findViewById(R.id.rootView);
@@ -150,7 +152,10 @@ public class MainActivity extends Activity implements AudioCollector.Callback, V
 
     @Override
     public void onClick(View view) {
-        if(view.getId() == R.id.button_start) {
+        if(view.getId() == R.id.button_start_0) {
+            Log.e(TAG, "start to render triangle");
+            mGLRender.setParamsInt(SAMPLE_TYPE, SAMPLE_TYPE_TRIANGLE, 0);
+        } else if(view.getId() == R.id.button_start_1) {
             Log.e(TAG, "start to render 3D model");
             mGLRender.setParamsInt(SAMPLE_TYPE, SAMPLE_TYPE_3D_MODEL, 0);
         } else if(view.getId() == R.id.button_start_2) {
