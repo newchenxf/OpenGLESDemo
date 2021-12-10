@@ -14,6 +14,8 @@ public class MyGLRender implements GLSurfaceView.Renderer {
     private static final String TAG = "MyGLRender";
     private MyNativeRender mNativeRender;
     private int mSampleType;
+    private int frameCount = 0;
+    private long firstCheckTime = 0;
 
     MyGLRender() {
         mNativeRender = new MyNativeRender();
@@ -34,7 +36,35 @@ public class MyGLRender implements GLSurfaceView.Renderer {
     @Override
     public void onDrawFrame(GL10 gl) {
         mNativeRender.native_OnDrawFrame();
+        checkFPS();
 
+    }
+
+    private void checkFPS() {
+
+        if(frameCount == 0) {
+            firstCheckTime = System.currentTimeMillis();
+        } else if(frameCount == 60) {
+            long currentTimeMillis = System.currentTimeMillis();
+            long timeGap = currentTimeMillis - firstCheckTime;
+            int fps = (int)(frameCount* 1000.0f / timeGap);
+            frameCount = 0;
+            firstCheckTime = currentTimeMillis;
+
+            if(mFPSListener != null) {
+                mFPSListener.onFpsUpdate(fps);
+            }
+        }
+        frameCount++;
+    }
+
+    private FPSListener mFPSListener;
+    public void setOnFPSListener(FPSListener fpsListener) {
+        mFPSListener = fpsListener;
+    }
+
+    public interface FPSListener {
+        void onFpsUpdate(int fps);
     }
 
     public void init() {

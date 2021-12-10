@@ -10,9 +10,11 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chenxf.opengles.audio.AudioCollector;
@@ -20,8 +22,10 @@ import com.chenxf.opengles.audio.AudioCollector;
 import static android.opengl.GLSurfaceView.RENDERMODE_CONTINUOUSLY;
 import static com.chenxf.opengles.MyNativeRender.SAMPLE_TYPE;
 import static com.chenxf.opengles.MyNativeRender.SAMPLE_TYPE_3D_MODEL;
+import static com.chenxf.opengles.MyNativeRender.SAMPLE_TYPE_3D_MODEL_ANIM;
+import static com.chenxf.opengles.MyNativeRender.SAMPLE_TYPE_TRIANGLE;
 
-public class MainActivity extends Activity implements AudioCollector.Callback, ViewTreeObserver.OnGlobalLayoutListener, SensorEventListener {
+public class MainActivity extends Activity implements AudioCollector.Callback, ViewTreeObserver.OnGlobalLayoutListener, SensorEventListener, View.OnClickListener, MyGLRender.FPSListener {
     private static final String TAG = "MainActivity";
     private static final String[] REQUEST_PERMISSIONS = {
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -35,15 +39,21 @@ public class MainActivity extends Activity implements AudioCollector.Callback, V
     private AudioCollector mAudioCollector;
     private MyGLRender mGLRender = new MyGLRender();
     private SensorManager mSensorManager;
+    private TextView mTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        findViewById(R.id.button_start_0).setOnClickListener(this);
+        findViewById(R.id.button_start_1).setOnClickListener(this);
+        findViewById(R.id.button_start_2).setOnClickListener(this);
+        mTextView = findViewById(R.id.text_info);
         mRootView = (ViewGroup) findViewById(R.id.rootView);
         mRootView.getViewTreeObserver().addOnGlobalLayoutListener(this);
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         mGLRender.init();
+        mGLRender.setOnFPSListener(this);
 
     }
 
@@ -54,9 +64,8 @@ public class MainActivity extends Activity implements AudioCollector.Callback, V
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         lp.addRule(RelativeLayout.CENTER_IN_PARENT);
         mGLSurfaceView = new MyGLSurfaceView(this, mGLRender);
-        mRootView.addView(mGLSurfaceView, lp);
+        mRootView.addView(mGLSurfaceView, 0, lp);
         mGLSurfaceView.setRenderMode(RENDERMODE_CONTINUOUSLY);
-
     }
 
     @Override
@@ -71,6 +80,10 @@ public class MainActivity extends Activity implements AudioCollector.Callback, V
 
         String fileDir = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
         CommonUtils.copyAssetsDirToSDCard(this, "avata1", fileDir + "/model");
+        CommonUtils.copyAssetsDirToSDCard(this, "avata2", fileDir + "/model");
+        CommonUtils.copyAssetsDirToSDCard(this, "vampire", fileDir + "/model");
+        CommonUtils.copyAssetsDirToSDCard(this, "cowboy", fileDir + "/model");
+
     }
 
     @Override
@@ -137,4 +150,27 @@ public class MainActivity extends Activity implements AudioCollector.Callback, V
         return true;
     }
 
+    @Override
+    public void onClick(View view) {
+        if(view.getId() == R.id.button_start_0) {
+            Log.e(TAG, "start to render triangle");
+            mGLRender.setParamsInt(SAMPLE_TYPE, SAMPLE_TYPE_TRIANGLE, 0);
+        } else if(view.getId() == R.id.button_start_1) {
+            Log.e(TAG, "start to render 3D model");
+            mGLRender.setParamsInt(SAMPLE_TYPE, SAMPLE_TYPE_3D_MODEL, 0);
+        } else if(view.getId() == R.id.button_start_2) {
+            Log.e(TAG, "start to render 3D anmi model");
+            mGLRender.setParamsInt(SAMPLE_TYPE, SAMPLE_TYPE_3D_MODEL_ANIM, 0);
+        }
+    }
+
+    @Override
+    public void onFpsUpdate(final int fps) {
+        mTextView.post(new Runnable() {
+            @Override
+            public void run() {
+                mTextView.setText("fps: " + fps);
+            }
+        });
+    }
 }

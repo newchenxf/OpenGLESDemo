@@ -72,10 +72,12 @@ void TriangleSample::Draw(int screenW, int screenH)
 
 void TriangleSample::Destroy()
 {
+	LOGCATE("TriangleSample::Destroy");
 	if (m_ProgramObj)
 	{
 		glDeleteProgram(m_ProgramObj);
 		m_ProgramObj = GL_NONE;
 	}
+	LOGCATE("TriangleSample::Destroy done");
 
 }

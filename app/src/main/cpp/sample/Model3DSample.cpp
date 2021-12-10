@@ -21,10 +21,13 @@ Model3DSample::~Model3DSample()
 
 void Model3DSample::Init()
 {
-	if(m_pModel != nullptr && m_pShader != nullptr)
+
+    if(m_pModel != nullptr && m_pShader != nullptr)
 		return;
 
-	char vShaderStr[] =
+    LOGCATE("Init start");
+
+    char vShaderStr[] =
 			"#version 300 es\n"
             "precision mediump float;\n"
 			"layout (location = 0) in vec3 a_position;\n"
@@ -96,16 +99,25 @@ void Model3DSample::Init()
             "}";
     //app层已把model文件夹拷贝到 /sdcard/Android/data/com.chenxf.opengles/files/Download 路径下，所以这里可以加载模型
 	std::string path(DEFAULT_OGL_ASSETS_DIR);
+
+    DEBUG_LOGCATE();
     m_pModel = new Model(path + "/model/avata1/eva.obj");
+    //m_pModel = new Model(path + "/model/vampire/dancing_vampire.dae");
+    //m_pModel = new Model(path + "/model/gltf/girl.gltf");
+//    m_pModel = new Model(path + "/model/test/test.glb");
+
+    DEBUG_LOGCATE();
 
     if (m_pModel->ContainsTextures())
     {
+        DEBUG_LOGCATE();
         m_pShader = new Shader(vShaderStr, fShaderStr);
     }
     else
     {
         m_pShader = new Shader(vShaderStr, fNoTextureShaderStr);
     }
+    LOGCATE("chenxf4: Init end");
 }
 
 void Model3DSample::LoadImage(NativeImage *pImage)
@@ -118,7 +130,7 @@ void Model3DSample::Draw(int screenW, int screenH)
 {
 	if(m_pModel == nullptr || m_pShader == nullptr) return;
     LOGCATE("Model3DSample::Draw()");
-    glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
 
@@ -131,6 +143,8 @@ void Model3DSample::Draw(int screenW, int screenH)
     m_pShader->setVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
     m_pShader->setVec3("viewPos", glm::vec3(0, 0, m_pModel->GetMaxViewDistance()));
     m_pModel->Draw((*m_pShader));
+
+    LOGCATE("Model3DSample::Draw() done");
 }
 
 void Model3DSample::Destroy()
