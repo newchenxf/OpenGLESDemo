@@ -1,6 +1,7 @@
 #include <TriangleSample.h>
 #include <Model3DSample.h>
 #include <Model3DAnimSample.h>
+#include <TextSample.h>
 #include "MyGLRenderContext.h"
 #include "LogUtil.h"
 
@@ -56,6 +57,9 @@ void MyGLRenderContext::SetParamsInt(int paramType, int value0, int value1)
 				break;
 			case SAMPLE_TYPE_KEY_3D_MODEL_ANIM:
 				m_pCurSample = new Model3DAnimSample();
+				break;
+			case SAMPLE_TYPE_KEY_TEXT:
+				m_pCurSample = new TextSample();
 				break;
 			default:
 			    m_pCurSample = nullptr;

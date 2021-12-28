@@ -60,7 +60,7 @@ extern "C" {
 \****************************************************************************************/
 //YV
 //-----------New for Qt
-/* For font */
+/* For fonts */
 enum {  CV_FONT_LIGHT           = 25,//QFont::Light,
         CV_FONT_NORMAL          = 50,//QFont::Normal,
         CV_FONT_DEMIBOLD        = 63,//QFont::DemiBold,

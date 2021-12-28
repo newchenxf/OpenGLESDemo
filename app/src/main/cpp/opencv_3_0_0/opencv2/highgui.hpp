@@ -172,7 +172,7 @@ enum { EVENT_FLAG_LBUTTON   = 1,
        EVENT_FLAG_ALTKEY    = 32
      };
 
-// Qt font
+// Qt fonts
 enum {  QT_FONT_LIGHT           = 25, //QFont::Light,
         QT_FONT_NORMAL          = 50, //QFont::Normal,
         QT_FONT_DEMIBOLD        = 63, //QFont::DemiBold,
@@ -180,7 +180,7 @@ enum {  QT_FONT_LIGHT           = 25, //QFont::Light,
         QT_FONT_BLACK           = 87  //QFont::Black
      };
 
-// Qt font style
+// Qt fonts style
 enum {  QT_STYLE_NORMAL         = 0, //QFont::StyleNormal,
         QT_STYLE_ITALIC         = 1, //QFont::StyleItalic,
         QT_STYLE_OBLIQUE        = 2  //QFont::StyleOblique
@@ -552,7 +552,7 @@ struct QtFont
     const char* nameFont;  // Qt: nameFont
     Scalar      color;     // Qt: ColorFont -> cvScalar(blue_component, green_component, red_component[, alpha_component])
     int         font_face; // Qt: bool italic
-    const int*  ascii;     // font data and metrics
+    const int*  ascii;     // fonts data and metrics
     const int*  greek;
     const int*  cyrillic;
     float       hscale, vscale;
@@ -562,13 +562,13 @@ struct QtFont
     int         line_type; // Qt: PointSize
 };
 
-/** @brief Creates the font to draw a text on an image.
+/** @brief Creates the fonts to draw a text on an image.
 
-@param nameFont Name of the font. The name should match the name of a system font (such as
-*Times*). If the font is not found, a default one is used.
-@param pointSize Size of the font. If not specified, equal zero or negative, the point size of the
-font is set to a system-dependent default value. Generally, this is 12 points.
-@param color Color of the font in BGRA where A = 255 is fully transparent. Use the macro CV _ RGB
+@param nameFont Name of the fonts. The name should match the name of a system fonts (such as
+*Times*). If the fonts is not found, a default one is used.
+@param pointSize Size of the fonts. If not specified, equal zero or negative, the point size of the
+fonts is set to a system-dependent default value. Generally, this is 12 points.
+@param color Color of the fonts in BGRA where A = 255 is fully transparent. Use the macro CV _ RGB
 for simplicity.
 @param weight Font weight. The following operation flags are available:
  -   **CV_FONT_LIGHT** Weight of 25
@@ -579,31 +579,31 @@ for simplicity.
 
  You can also specify a positive integer for better control.
 @param style Font style. The following operation flags are available:
- -   **CV_STYLE_NORMAL** Normal font
- -   **CV_STYLE_ITALIC** Italic font
- -   **CV_STYLE_OBLIQUE** Oblique font
+ -   **CV_STYLE_NORMAL** Normal fonts
+ -   **CV_STYLE_ITALIC** Italic fonts
+ -   **CV_STYLE_OBLIQUE** Oblique fonts
 @param spacing Spacing between characters. It can be negative or positive.
 
 The function fontQt creates a CvFont object. This CvFont is not compatible with putText .
 
 A basic usage of this function is the following: :
 @code
-    CvFont font = fontQt(''Times'');
-    addText( img1, ``Hello World !'', Point(50,50), font);
+    CvFont fonts = fontQt(''Times'');
+    addText( img1, ``Hello World !'', Point(50,50), fonts);
 @endcode
  */
 CV_EXPORTS QtFont fontQt(const String& nameFont, int pointSize = -1,
                          Scalar color = Scalar::all(0), int weight = QT_FONT_NORMAL,
                          int style = QT_STYLE_NORMAL, int spacing = 0);
 
-/** @brief Creates the font to draw a text on an image.
+/** @brief Creates the fonts to draw a text on an image.
 
 @param img 8-bit 3-channel image where the text should be drawn.
 @param text Text to write on an image.
 @param org Point(x,y) where the text should start on an image.
 @param font Font to use to draw a text.
 
-The function addText draws *text* on an image *img* using a specific font *font* (see example fontQt
+The function addText draws *text* on an image *img* using a specific fonts *fonts* (see example fontQt
 )
  */
 CV_EXPORTS void addText( const Mat& img, const String& text, Point org, const QtFont& font);

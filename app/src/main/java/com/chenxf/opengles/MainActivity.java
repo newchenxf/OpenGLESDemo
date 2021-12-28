@@ -23,6 +23,7 @@ import static android.opengl.GLSurfaceView.RENDERMODE_CONTINUOUSLY;
 import static com.chenxf.opengles.MyNativeRender.SAMPLE_TYPE;
 import static com.chenxf.opengles.MyNativeRender.SAMPLE_TYPE_3D_MODEL;
 import static com.chenxf.opengles.MyNativeRender.SAMPLE_TYPE_3D_MODEL_ANIM;
+import static com.chenxf.opengles.MyNativeRender.SAMPLE_TYPE_TEXT;
 import static com.chenxf.opengles.MyNativeRender.SAMPLE_TYPE_TRIANGLE;
 
 public class MainActivity extends Activity implements AudioCollector.Callback, ViewTreeObserver.OnGlobalLayoutListener, SensorEventListener, View.OnClickListener, MyGLRender.FPSListener {
@@ -48,6 +49,8 @@ public class MainActivity extends Activity implements AudioCollector.Callback, V
         findViewById(R.id.button_start_0).setOnClickListener(this);
         findViewById(R.id.button_start_1).setOnClickListener(this);
         findViewById(R.id.button_start_2).setOnClickListener(this);
+        findViewById(R.id.button_start_3).setOnClickListener(this);
+
         mTextView = findViewById(R.id.text_info);
         mRootView = (ViewGroup) findViewById(R.id.rootView);
         mRootView.getViewTreeObserver().addOnGlobalLayoutListener(this);
@@ -82,7 +85,8 @@ public class MainActivity extends Activity implements AudioCollector.Callback, V
         CommonUtils.copyAssetsDirToSDCard(this, "avata1", fileDir + "/model");
         CommonUtils.copyAssetsDirToSDCard(this, "avata2", fileDir + "/model");
         CommonUtils.copyAssetsDirToSDCard(this, "vampire", fileDir + "/model");
-        CommonUtils.copyAssetsDirToSDCard(this, "cowboy", fileDir + "/model");
+        //font related
+        CommonUtils.copyAssetsDirToSDCard(this, "fonts", fileDir);
 
     }
 
@@ -161,6 +165,9 @@ public class MainActivity extends Activity implements AudioCollector.Callback, V
         } else if(view.getId() == R.id.button_start_2) {
             Log.e(TAG, "start to render 3D anmi model");
             mGLRender.setParamsInt(SAMPLE_TYPE, SAMPLE_TYPE_3D_MODEL_ANIM, 0);
+        } else if(view.getId() == R.id.button_start_3) {
+            Log.e(TAG, "start to render text");
+            mGLRender.setParamsInt(SAMPLE_TYPE, SAMPLE_TYPE_TEXT, 0);
         }
     }
 

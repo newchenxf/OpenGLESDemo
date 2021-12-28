@@ -117,7 +117,7 @@ void Model3DSample::Init()
     {
         m_pShader = new Shader(vShaderStr, fNoTextureShaderStr);
     }
-    LOGCATE("chenxf4: Init end");
+    LOGCATE("Model3DSample::Init end");
 }
 
 void Model3DSample::LoadImage(NativeImage *pImage)

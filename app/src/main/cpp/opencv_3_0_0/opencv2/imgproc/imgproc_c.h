@@ -1120,7 +1120,7 @@ typedef struct CvFont
   const char* nameFont;   //Qt:nameFont
   CvScalar color;       //Qt:ColorFont -> cvScalar(blue_component, green_component, red_component[, alpha_component])
     int         font_face;    //Qt: bool italic         /** =CV_FONT_* */
-    const int*  ascii;      //!< font data and metrics
+    const int*  ascii;      //!< fonts data and metrics
     const int*  greek;
     const int*  cyrillic;
     float       hscale, vscale;
@@ -1131,18 +1131,18 @@ typedef struct CvFont
 }
 CvFont;
 
-/** @brief Initializes font structure (OpenCV 1.x API).
+/** @brief Initializes fonts structure (OpenCV 1.x API).
 
-The function initializes the font structure that can be passed to text rendering functions.
+The function initializes the fonts structure that can be passed to text rendering functions.
 
-@param font Pointer to the font structure initialized by the function
+@param font Pointer to the fonts structure initialized by the function
 @param font_face Font name identifier. See cv::HersheyFonts and corresponding old CV_* identifiers.
 @param hscale Horizontal scale. If equal to 1.0f , the characters have the original width
-depending on the font type. If equal to 0.5f , the characters are of half the original width.
+depending on the fonts type. If equal to 0.5f , the characters are of half the original width.
 @param vscale Vertical scale. If equal to 1.0f , the characters have the original height depending
-on the font type. If equal to 0.5f , the characters are of half the original height.
+on the fonts type. If equal to 0.5f , the characters are of half the original height.
 @param shear Approximate tangent of the character slope relative to the vertical line. A zero
-value means a non-italic font, 1.0f means about a 45 degree slope, etc.
+value means a non-italic fonts, 1.0f means about a 45 degree slope, etc.
 @param thickness Thickness of the text strokes
 @param line_type Type of the strokes, see line description
 
@@ -1161,7 +1161,7 @@ CV_INLINE CvFont cvFont( double scale, int thickness CV_DEFAULT(1) )
     return font;
 }
 
-/** @brief Renders text stroke with specified font and color at specified location.
+/** @brief Renders text stroke with specified fonts and color at specified location.
    CvFont should be initialized with cvInitFont
 @see cvInitFont, cvGetTextSize, cvFont, cv::putText
 */

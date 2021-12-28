@@ -4058,14 +4058,14 @@ CV_EXPORTS_W void ellipse2Poly( Point center, Size axes, int angle,
 /** @brief Draws a text string.
 
 The function putText renders the specified text string in the image. Symbols that cannot be rendered
-using the specified font are replaced by question marks. See getTextSize for a text rendering code
+using the specified fonts are replaced by question marks. See getTextSize for a text rendering code
 example.
 
 @param img Image.
 @param text Text string to be drawn.
 @param org Bottom-left corner of the text string in the image.
 @param fontFace Font type, see cv::HersheyFonts.
-@param fontScale Font scale factor that is multiplied by the font-specific base size.
+@param fontScale Font scale factor that is multiplied by the fonts-specific base size.
 @param color Text color.
 @param thickness Thickness of the lines used to draw a text.
 @param lineType Line type. See the line for details.
@@ -4114,7 +4114,7 @@ That is, the following code renders some text, the tight box surrounding it, and
 
 @param text Input text string.
 @param fontFace Font to use, see cv::HersheyFonts.
-@param fontScale Font scale factor that is multiplied by the font-specific base size.
+@param fontScale Font scale factor that is multiplied by the fonts-specific base size.
 @param thickness Thickness of lines used to render the text. See putText for details.
 @param[out] baseLine y-coordinate of the baseline relative to the bottom-most text
 point.

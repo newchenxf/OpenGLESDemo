@@ -208,17 +208,17 @@ enum LineTypes {
 };
 
 //! Only a subset of Hershey fonts
-//! <http://sources.isc.org/utils/misc/hershey-font.txt> are supported
+//! <http://sources.isc.org/utils/misc/hershey-fonts.txt> are supported
 enum HersheyFonts {
-    FONT_HERSHEY_SIMPLEX        = 0, //!< normal size sans-serif font
-    FONT_HERSHEY_PLAIN          = 1, //!< small size sans-serif font
-    FONT_HERSHEY_DUPLEX         = 2, //!< normal size sans-serif font (more complex than FONT_HERSHEY_SIMPLEX)
-    FONT_HERSHEY_COMPLEX        = 3, //!< normal size serif font
-    FONT_HERSHEY_TRIPLEX        = 4, //!< normal size serif font (more complex than FONT_HERSHEY_COMPLEX)
+    FONT_HERSHEY_SIMPLEX        = 0, //!< normal size sans-serif fonts
+    FONT_HERSHEY_PLAIN          = 1, //!< small size sans-serif fonts
+    FONT_HERSHEY_DUPLEX         = 2, //!< normal size sans-serif fonts (more complex than FONT_HERSHEY_SIMPLEX)
+    FONT_HERSHEY_COMPLEX        = 3, //!< normal size serif fonts
+    FONT_HERSHEY_TRIPLEX        = 4, //!< normal size serif fonts (more complex than FONT_HERSHEY_COMPLEX)
     FONT_HERSHEY_COMPLEX_SMALL  = 5, //!< smaller version of FONT_HERSHEY_COMPLEX
-    FONT_HERSHEY_SCRIPT_SIMPLEX = 6, //!< hand-writing style font
+    FONT_HERSHEY_SCRIPT_SIMPLEX = 6, //!< hand-writing style fonts
     FONT_HERSHEY_SCRIPT_COMPLEX = 7, //!< more complex variant of FONT_HERSHEY_SCRIPT_SIMPLEX
-    FONT_ITALIC                 = 16 //!< flag for italic font
+    FONT_ITALIC                 = 16 //!< flag for italic fonts
 };
 
 enum ReduceTypes { REDUCE_SUM = 0, //!< the output is the sum of all rows/columns of the matrix.

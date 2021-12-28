@@ -18,6 +18,7 @@ include_directories(
         opencv_3_0_0
         egl
         looper
+        freetype
 )
 
 # Creates and names a library, sets it as either STATIC
@@ -62,6 +63,9 @@ set_target_properties(assimp PROPERTIES IMPORTED_LOCATION ${jnilibs}/${ANDROID_A
 add_library(opencv_java3 SHARED IMPORTED )
 set_target_properties(opencv_java3 PROPERTIES IMPORTED_LOCATION ${jnilibs}/${ANDROID_ABI}/libopencv_java3.so)
 
+add_library(freetype SHARED IMPORTED )
+set_target_properties(freetype PROPERTIES IMPORTED_LOCATION ${jnilibs}/${ANDROID_ABI}/libfreetype.so)
+
 
 # Specifies libraries CMake should link to your target library. You
 # can link multiple libraries, such as libraries you define in this
@@ -74,7 +78,8 @@ set_target_properties(opencv_java3 PROPERTIES IMPORTED_LOCATION ${jnilibs}/${AND
 #SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -fno-rtti -fno-exceptions")
 set(third-party-libs
         assimp
-        opencv_java3)
+        opencv_java3
+        freetype)
 
 target_link_libraries( # Specifies the target library.
                        native-render
