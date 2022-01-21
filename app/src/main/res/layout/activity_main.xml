@@ -35,7 +35,12 @@
             android:id="@+id/button_start_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TEXT"/>
+            android:text="文本-中英文"/>
+        <Button
+            android:id="@+id/button_start_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="文本-纯英文"/>
 
     </LinearLayout>
 

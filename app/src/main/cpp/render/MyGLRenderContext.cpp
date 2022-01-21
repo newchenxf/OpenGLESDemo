@@ -2,6 +2,7 @@
 #include <Model3DSample.h>
 #include <Model3DAnimSample.h>
 #include <TextSample.h>
+#include <EnglishTextSample.h>
 #include "MyGLRenderContext.h"
 #include "LogUtil.h"
 
@@ -60,6 +61,9 @@ void MyGLRenderContext::SetParamsInt(int paramType, int value0, int value1)
 				break;
 			case SAMPLE_TYPE_KEY_TEXT:
 				m_pCurSample = new TextSample();
+				break;
+			case SAMPLE_TYPE_KEY_TEXT_ENGLISH:
+				m_pCurSample = new EnglishTextSample();
 				break;
 			default:
 			    m_pCurSample = nullptr;

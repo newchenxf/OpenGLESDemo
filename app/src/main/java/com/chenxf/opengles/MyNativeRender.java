@@ -7,6 +7,7 @@ public class MyNativeRender {
     public static final int SAMPLE_TYPE_3D_MODEL                = SAMPLE_TYPE + 1;
     public static final int SAMPLE_TYPE_3D_MODEL_ANIM           = SAMPLE_TYPE + 2;
     public static final int SAMPLE_TYPE_TEXT                    = SAMPLE_TYPE + 3;
+    public static final int SAMPLE_TYPE_TEXT_ENGLISH            = SAMPLE_TYPE + 4;
 
     public static final int SAMPLE_TYPE_SET_TOUCH_LOC           = SAMPLE_TYPE + 999;
     public static final int SAMPLE_TYPE_SET_GRAVITY_XY          = SAMPLE_TYPE + 1000;

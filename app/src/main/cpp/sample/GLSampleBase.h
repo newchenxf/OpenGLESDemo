@@ -14,6 +14,7 @@
 #define SAMPLE_TYPE_KEY_3D_MODEL                SAMPLE_TYPE + 1
 #define SAMPLE_TYPE_KEY_3D_MODEL_ANIM           SAMPLE_TYPE + 2
 #define SAMPLE_TYPE_KEY_TEXT                    SAMPLE_TYPE + 3
+#define SAMPLE_TYPE_KEY_TEXT_ENGLISH            SAMPLE_TYPE + 4
 
 
 #define SAMPLE_TYPE_KEY_SET_TOUCH_LOC           SAMPLE_TYPE + 999

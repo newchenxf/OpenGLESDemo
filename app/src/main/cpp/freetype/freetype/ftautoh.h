@@ -175,7 +175,7 @@ FT_BEGIN_HEADER
    *       U+1100 - U+11FF  // Hangul Jamo
    *       U+2E80 - U+2EFF  // CJK Radicals Supplement
    *       U+2F00 - U+2FDF  // Kangxi Radicals
-   *       U+2FF0 - U+2FFF  // Ideographic Description Characters
+   *       U+2FF0 - U+2FFF  // Ideographic Description mCharacters
    *       U+3000 - U+303F  // CJK Symbols and Punctuation
    *       U+3040 - U+309F  // Hiragana
    *       U+30A0 - U+30FF  // Katakana

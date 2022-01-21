@@ -25,6 +25,7 @@ import static com.chenxf.opengles.MyNativeRender.SAMPLE_TYPE_3D_MODEL;
 import static com.chenxf.opengles.MyNativeRender.SAMPLE_TYPE_3D_MODEL_ANIM;
 import static com.chenxf.opengles.MyNativeRender.SAMPLE_TYPE_TEXT;
 import static com.chenxf.opengles.MyNativeRender.SAMPLE_TYPE_TRIANGLE;
+import static com.chenxf.opengles.MyNativeRender.SAMPLE_TYPE_TEXT_ENGLISH;
 
 public class MainActivity extends Activity implements AudioCollector.Callback, ViewTreeObserver.OnGlobalLayoutListener, SensorEventListener, View.OnClickListener, MyGLRender.FPSListener {
     private static final String TAG = "MainActivity";
@@ -50,6 +51,7 @@ public class MainActivity extends Activity implements AudioCollector.Callback, V
         findViewById(R.id.button_start_1).setOnClickListener(this);
         findViewById(R.id.button_start_2).setOnClickListener(this);
         findViewById(R.id.button_start_3).setOnClickListener(this);
+        findViewById(R.id.button_start_4).setOnClickListener(this);
 
         mTextView = findViewById(R.id.text_info);
         mRootView = (ViewGroup) findViewById(R.id.rootView);
@@ -168,6 +170,9 @@ public class MainActivity extends Activity implements AudioCollector.Callback, V
         } else if(view.getId() == R.id.button_start_3) {
             Log.e(TAG, "start to render text");
             mGLRender.setParamsInt(SAMPLE_TYPE, SAMPLE_TYPE_TEXT, 0);
+        } else if(view.getId() == R.id.button_start_4) {
+            Log.e(TAG, "start to render text");
+            mGLRender.setParamsInt(SAMPLE_TYPE, SAMPLE_TYPE_TEXT_ENGLISH, 0);
         }
     }
 

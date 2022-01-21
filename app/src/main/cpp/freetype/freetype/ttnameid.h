@@ -1027,7 +1027,7 @@ FT_BEGIN_HEADER
   /* Bit 59   CJK Unified Ideographs             */
   /*          CJK Radicals Supplement            */
   /*          Kangxi Radicals                    */
-  /*          Ideographic Description Characters */
+  /*          Ideographic Description mCharacters */
   /*          CJK Unified Ideographs Extension A */
   /*          CJK Unified Ideographs Extension B */
   /*          Kanbun                             */
